@@ -1,23 +1,18 @@
 import 'package:flutter/material.dart';
+import 'package:todoapp/pages/homepage.dart';
 
 void main() {
   runApp(const MyApp());
 }
 
-class MyApp extends StatefulWidget {
+class MyApp extends StatelessWidget {
   const MyApp({super.key});
 
   @override
-  State<MyApp> createState() => _MyAppState();
-}
-
-class _MyAppState extends State<MyApp> {
-  @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(
-        title: Text("todoapp"),
-      ),
+    return MaterialApp(
+      home: Homepage(),
+      theme: ThemeData(primarySwatch: Colors.yellow),
     );
   }
 }
