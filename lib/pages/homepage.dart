@@ -26,6 +26,13 @@ class _HomepageState extends State<Homepage> {
     setState(() {
       todoList.add([_controller.text, false]);
       Navigator.of(context).pop();
+      _controller.clear();
+    });
+  }
+
+  void deleteTask(int index) {
+    setState(() {
+      todoList.removeAt(index);
     });
   }
 
@@ -60,9 +67,11 @@ class _HomepageState extends State<Homepage> {
         itemCount: todoList.length,
         itemBuilder: (context, index) {
           return TodoTile(
-              onChanged: (value) => checkBoxChanged(value, index),
-              taskDone: todoList[index][1],
-              taskName: todoList[index][0]);
+            onChanged: (value) => checkBoxChanged(value, index),
+            taskDone: todoList[index][1],
+            taskName: todoList[index][0],
+            deleteFunction: (context) => deleteTask(index),
+          );
         },
       ),
     );
