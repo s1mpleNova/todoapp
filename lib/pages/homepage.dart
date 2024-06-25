@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:hive_flutter/hive_flutter.dart';
 import 'package:todoapp/util/dialog_box.dart';
 import 'package:todoapp/util/todo_tile.dart';
 
@@ -16,6 +17,9 @@ class _HomepageState extends State<Homepage> {
     ["make Bed", false],
     ["workout", true]
   ];
+
+  final _myBox = Hive.openBox('myBox');
+
   void checkBoxChanged(bool? value, int index) {
     setState(() {
       todoList[index][1] = !todoList[index][1];
