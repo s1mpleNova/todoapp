@@ -38,7 +38,6 @@ class DialogBox extends StatelessWidget {
                 MyButton(onPressed: onCancel, text: "cancel")
               ],
             )
-
             //button->save+cancel
           ],
         ),
