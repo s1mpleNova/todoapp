@@ -5,13 +5,13 @@ import 'package:hive_flutter/hive_flutter.dart';
 class todoDatabase {
   List todoList = [];
   //reference the box
-  final myBox = Hive.box('myBox');
+  final myBox = Hive.box('mybox');
 
 //run this method if the app is oopened for the very first time
   void createInitialData() {
     todoList = [
-      ["todolist", "false"],
-      ["make tutorial", "true"]
+      ["todolist", false],
+      ["make tutorial", true]
     ];
   }
 
