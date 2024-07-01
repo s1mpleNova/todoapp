@@ -5,7 +5,7 @@ import 'package:hive_flutter/hive_flutter.dart';
 class todoDatabase {
   List todoList = [];
   //reference the box
-  final _myBox = Hive.box('_myBox');
+  final myBox = Hive.box('myBox');
 
 //run this method if the app is oopened for the very first time
   void createInitialData() {
@@ -16,11 +16,11 @@ class todoDatabase {
   }
 
   void loadData() {
-    todoList = _myBox.get("TODOLIST");
+    todoList = myBox.get("TODOLIST");
   }
 
   //update the db
   void updateData() {
-    _myBox.put("TODOLIST", todoList);
+    myBox.put("TODOLIST", todoList);
   }
 }

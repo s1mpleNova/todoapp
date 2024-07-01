@@ -1,40 +1,39 @@
 import 'package:flutter/material.dart';
-import 'package:hive/hive.dart';
 import 'package:hive_flutter/hive_flutter.dart';
-import 'package:todoapp/data/database.dart';
-import 'package:todoapp/util/dialog_box.dart';
-import 'package:todoapp/util/todo_tile.dart';
 
-class Homepage extends StatefulWidget {
-  const Homepage({super.key});
+import '../data/database.dart';
+import '../util/dialog_box.dart';
+import '../util/todo_tile.dart';
+
+class HomePage extends StatefulWidget {
+  const HomePage({super.key});
 
   @override
-  State<Homepage> createState() => _HomepageState();
+  State<HomePage> createState() => HomePageState();
 }
 
-class _HomepageState extends State<Homepage> {
-  //text control
-  final _myBox = Hive.box('_myBox');
-  todoDatabase db = todoDatabase(); // Listdb.todoList = [
-  //   ["make Bed", false],
-  //   ["workout", true]
-  // ];
+class HomePageState extends State<HomePage> {
+  // reference the hive box
+  final myBox = Hive.box('mybox');
+  todoDatabase db = todoDatabase();
 
   @override
   void initState() {
-    // TODO: implement initState
-    //if the first timēpoening the app then the defacult data
-    if (_myBox.get("TODOLIST") == null) {
+    // if this is the 1st time ever openin the app, then create default data
+    if (myBox.get("TODOLIST") == null) {
       db.createInitialData();
     } else {
-      //there already is data
+      // there already exists data
       db.loadData();
     }
+
     super.initState();
   }
 
+  // text controller
   final _controller = TextEditingController();
 
+  // checkbox was tapped
   void checkBoxChanged(bool? value, int index) {
     setState(() {
       db.todoList[index][1] = !db.todoList[index][1];
@@ -42,55 +41,57 @@ class _HomepageState extends State<Homepage> {
     db.updateData();
   }
 
-  void saveTask() {
+  // save new task
+  void saveNewTask() {
     setState(() {
       db.todoList.add([_controller.text, false]);
-      Navigator.of(context).pop();
       _controller.clear();
-      db.updateData();
     });
+    Navigator.of(context).pop();
+    db.updateData();
   }
 
-  void deleteTask(int index) {
-    setState(() {
-      db.todoList.removeAt(index);
-    });
-  }
-
+  // create a new task
   void createNewTask() {
     showDialog(
       context: context,
       builder: (context) {
         return DialogBox(
           controller: _controller,
-          onSave: saveTask,
+          onSave: saveNewTask,
           onCancel: () => Navigator.of(context).pop(),
         );
       },
     );
   }
 
+  // delete task
+  void deleteTask(int index) {
+    setState(() {
+      db.todoList.removeAt(index);
+    });
+    db.updateData();
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      backgroundColor: Colors.yellow[200],
       appBar: AppBar(
-        title: Text("ToDo"),
+        title: Text('TO DO'),
         elevation: 0,
-        backgroundColor: Colors.yellow[200],
       ),
       floatingActionButton: FloatingActionButton(
-        onPressed: () {
-          createNewTask();
-        },
+        onPressed: createNewTask,
         child: Icon(Icons.add),
       ),
       body: ListView.builder(
         itemCount: db.todoList.length,
         itemBuilder: (context, index) {
           return TodoTile(
-            onChanged: (value) => checkBoxChanged(value, index),
-            taskDone: db.todoList[index][1],
             taskName: db.todoList[index][0],
+            taskDone: db.todoList[index][1],
+            onChanged: (value) => checkBoxChanged(value, index),
             deleteFunction: (context) => deleteTask(index),
           );
         },

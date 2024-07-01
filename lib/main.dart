@@ -5,7 +5,7 @@ import 'package:todoapp/pages/homepage.dart';
 void main() async {
   await Hive.initFlutter();
   // await Hive.box("_myBox");
-  var box = await Hive.openBox('_mybox');
+  var box = await Hive.openBox('mybox');
   runApp(const MyApp());
 }
 
@@ -16,7 +16,7 @@ class MyApp extends StatelessWidget {
   Widget build(BuildContext context) {
     return MaterialApp(
       debugShowCheckedModeBanner: false,
-      home: Homepage(),
+      home: HomePage(),
       theme: ThemeData(primarySwatch: Colors.yellow),
     );
   }
